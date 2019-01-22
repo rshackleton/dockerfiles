@@ -6,6 +6,7 @@ steps:
   image: golang
   pull: always
   commands:
+  - cd healthcheck
   - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o dist/healthcheck-linux-amd64 healthcheck.go
   - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -ldflags="-w -s" -o dist/healthcheck-linux-arm7 healthcheck.go
   - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags="-w -s" -o dist/healthcheck-darwin-amd64 healthcheck.go  
@@ -15,5 +16,5 @@ steps:
   settings:
     api_key:
       from_secret: github_token
-    files: dist/*
+    files: healthcheck/dist/*
     draft: true # TODO: Add Auto title + note then remove
