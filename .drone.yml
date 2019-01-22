@@ -2,6 +2,16 @@ kind: pipeline
 name: default
 
 steps:
+- name: caddy  
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: oscartbeaumont/caddy
+    tags: latest
+
 - name: healthcheck-build
   image: golang
   pull: always
@@ -18,3 +28,5 @@ steps:
       from_secret: github_token
     files: healthcheck/dist/*
     draft: true # TODO: Add Auto title + note then remove
+  when:
+    event: tag
