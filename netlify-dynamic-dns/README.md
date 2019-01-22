@@ -1,6 +1,4 @@
 # Netlify Dynamic DNS
-[![Go Report Card](https://goreportcard.com/badge/github.com/oscartbeaumont/netlify-dynamic-dns)](https://goreportcard.com/report/github.com/oscartbeaumont/netlify-dynamic-dns)
-[![Docker Build Status](https://img.shields.io/docker/build/oscartbeaumont/netlify-dynamic-dns.svg?style=flat)](https://hub.docker.com/oscartbeaumont/netlify-dynamic-dns)
 
 A dynamic DNS client for [Netlify's Managed DNS](https://www.netlify.com/docs/dns/) service. Every 5 minutes (configurable) the application will (using [ident.me](https://ident.me)) determine the server's public IPv4 and IPv6 address and check to see if they match the address's currently in the Netlify A and AAAA DNS records. If they do not match the existing values the values will be update. If duplicate DNS entries are detected the duplicates will be removed.
 
