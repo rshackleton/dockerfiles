@@ -1,0 +1,19 @@
+kind: pipeline
+name: default
+
+steps:
+- name: healthcheck-build
+  image: golang
+  pull: always
+  commands:
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o dist/healthcheck-linux-amd64 healthcheck.go
+  - CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go build -ldflags="-w -s" -o dist/healthcheck-linux-arm7 healthcheck.go
+  - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags="-w -s" -o dist/healthcheck-darwin-amd64 healthcheck.go  
+- name: healthcheck-publish
+  image: plugins/github-release
+  pull: always
+  settings:
+    api_key:
+      from_secret: github_token
+    files: dist/*
+    draft: true # TODO: Add Auto title + note then remove
