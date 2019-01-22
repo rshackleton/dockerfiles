@@ -2,6 +2,17 @@ kind: pipeline
 name: default
 
 steps:
+- name: scratch  
+  image: plugins/docker
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    dockerfile: scratch/Dockerfile
+    repo: oscartbeaumont/scratch
+    tags: latest
+    
 - name: caddy  
   image: plugins/docker
   settings:
@@ -9,6 +20,7 @@ steps:
       from_secret: docker_username
     password:
       from_secret: docker_password
+    dockerfile: caddy/Dockerfile
     repo: oscartbeaumont/caddy
     tags: latest
 
