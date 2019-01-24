@@ -6,7 +6,12 @@ before_install:
   - chmod +x deploy
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin || exit 1
 
+install:
+  - git clone https://github.com/oscartbeaumont/netlify-dynamic-dns netlify-dynamic-dns
+
 jobs:
   include:
     - stage: "Scratch"
       script: ./deploy oscartbeaumont/scratch scratch/
+    - stage: "Netlify Dynamic DNS"
+      script: ./deploy oscartbeaumont/netlify-dynamic-dns netlify-dynamic-dns/
