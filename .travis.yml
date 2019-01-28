@@ -6,9 +6,4 @@ before_install:
   - chmod +x deploy
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin || exit 1
 
-jobs:
-  include:
-    - stage: "Scratch"
-      script: ./deploy oscartbeaumont/scratch scratch/
-    - stage: "Netlify Dynamic DNS"
-      script: git clone https://github.com/oscartbeaumont/netlify-dynamic-dns netlify-dynamic-dns && ./deploy oscartbeaumont/netlify-dynamic-dns netlify-dynamic-dns/
+script: if [ $TRAVIS_EVENT_TYPE = cron ]; then ./deploy rebuild-all; else ./deploy; fi

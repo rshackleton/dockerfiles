@@ -1,3 +1,19 @@
 #!/bin/bash
-docker build -t $1 $2
-docker push $1 || exit 1
+publisher_namespace="oscartbeaumont"
+
+if [ "$1" == "rebuild-all" ]; then
+  echo "Rebuilding All Containers"
+   diff_files=./*
+else
+  diff_files=$(git diff --name-only HEAD^ HEAD)
+fi
+
+for file in ${diff_files}; do
+  if [[ $file == */Dockerfile ]]; then
+    path=${file%"/Dockerfile"}
+    tag="${publisher_namespace}/${path}"
+    echo "Rebuilding The Dockerfile At: ${path}/, With The Tag: ${tag}"
+    docker build -t $tag "${path}/" || exit 1
+    docker push $tag || exit 1
+  fi
+done
